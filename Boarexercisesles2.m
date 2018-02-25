@@ -79,27 +79,34 @@ plot(time,Popan)
 clearvars
 clc
 close all
+tic
 r = 0.48
 c = 0.01
 d = 0.24
 e = 0.005
 Nboars = 100
 Nwolves = 25
-tijd = 1:100
-for t = 1:99
-    N = Nboars(t)*(1+r)-c*Nwolves(t)*Nboars(t);
-    W = Nwolves(t)*(1-d)+e*Nwolves(t)*N
+dt = 1
+Tottime = 100
+timeperiod= dt:dt:Tottime
+for t = 2:numel(timeperiod)
+    N = Nboars(t-1)+((r*Nboars(t-1)-c*Nwolves(t-1)*Nboars(t-1))*dt);
+    W = Nwolves(t-1)+((-d*Nwolves(t-1)+e*Nwolves(t-1)*N)*dt)
     Nboars = [Nboars,N]
     Nwolves = [Nwolves, W]
     
 end
-plot(tijd, Nboars)
+plot(timeperiod, Nboars,timeperiod,Nwolves)
+toc
+elapsedTime1 = toc
+
 analytical_error=e*Nboars-d*log(Nboars)-r*log(Nwolves)+c*Nwolves
 %%
 %Matlab solver
 clearvars
 clc
 close all
+tic
 r = 0.48;
 c = 0.01;
 d = 0.24;
@@ -109,5 +116,8 @@ Initial = [100,25];     % For a differential equation the initial conditions are
 timeperiod = [0 100]; % this is the interval of integration of the differential equation
 Functie = @(t,y)[r*y(1)-c*y(2)*y(1);-d*y(2)+e*y(2)*y(1)]; % this commant defines the equations that need to be solved
 ode45(Functie,timeperiod,Initial) % specific syntax to solve the equation and plot it
+toc
+elapsedTime2 = toc
+Timediff = elapsedTime2-elapsedTime1
 
 % https://www.youtube.com/watch?v=5r1zFz5CB2w link info method + https://www.youtube.com/watch?v=nTRNrvJmixw
