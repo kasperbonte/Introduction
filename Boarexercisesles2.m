@@ -107,7 +107,7 @@ e = 0.005;
 W = 25;
 Initial = [100,25];     % For a differential equation the initial conditions are necessary to solve the equation 
 timeperiod = [0 100]; % this is the interval of integration of the differential equation
-Funtie = @(t,y)[r*y(1)-c*y(2)*y(1);-d*y(2)+e*y(2)*y(1)]; % this commant defines the equations that need to be solved
-ode45(Functie,timperiod,Initial) % specific syntax to solve the equation and plot it
+Functie = @(t,y)[r*y(1)-c*y(2)*y(1);-d*y(2)+e*y(2)*y(1)]; % this commant defines the equations that need to be solved
+ode45(Functie,timeperiod,Initial) % specific syntax to solve the equation and plot it
 
 % https://www.youtube.com/watch?v=5r1zFz5CB2w link info method + https://www.youtube.com/watch?v=nTRNrvJmixw
