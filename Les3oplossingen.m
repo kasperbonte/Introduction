@@ -102,22 +102,21 @@ Nini = 100;
 Wini=25;
 
 
-totT = 200;
+totT = 500;
 dt=0.001;
 time=dt:dt:totT;
 
 N(1) = Nini;
 W(1)=Wini;
-H(1) = 0;
+H(1) = alpha*Nini;
 
 for t=2:numel(time)
-%         dH = alpha*N(t-1);
-%         H(t) = dH;
-%         dN = ((r*N(t-1)-c*W(t-1)*N(t-1))*dt-0.5*dt)-H(t) ´%Insert human hunting with sniper
-        dN = (r*N(t-1)-c*W(t-1)*N(t-1))*dt-0.5*dt;% Bij hunting = 0.5 trager naar een diepte punt de boars, de wolves blijven op een constante populatie dan
-%         dN = (r*N(t-1)-c*W(t-1)*N(t-1))*dt-1*dt; % Bij hunting = 1 snel
-%         naar een diepte punt de boars, de wolves blijven op een constante
-%         populatie dan
+        dH = alpha*N(t-1);
+        H(t) = dH;
+        dN = ((r*N(t-1)-c*W(t-1)*N(t-1))-H(t))*dt; %Insert human hunting with sniper, lower equilibrium than without shooting
+%         dN = ((r*N(t-1)-c*W(t-1)*N(t-1))-0.5*dt)*dt;% With hunting = 0.5 more out of equilibirum in M,N plot 
+%         dN = ((r*N(t-1)-c*W(t-1)*N(t-1))-1*dt)*dt; % With hunting = 1
+%         much more out equilibrium in M,N plot
         N(t) = N(t-1)+dN;
         
         dW = (-d*W(t-1)+e*W(t-1)*N(t-1))*dt;
@@ -161,8 +160,8 @@ Functie = @(t,y)[(r*y(1)-c*y(2)*y(1))-0.1*dt;(-d*y(2)+e*y(2)*y(1)+e2*y(2)*y(3))-
 Boars = y(:,1)
 Wolves = y(:,2)
 Deer = y(:,3)
-% plot(t(:,1),Boars,t(:,1),Wolves,t(:,1),Deer)
-% legend('Boars','Wolves','Deer')
+plot(t(:,1),Boars,t(:,1),Wolves,t(:,1),Deer)
+legend('Boars','Wolves','Deer')
 figure
 scatter3(Wolves,Boars,Deer,40,Timeperiod,'filled')
 ax = gca
